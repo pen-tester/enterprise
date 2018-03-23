@@ -62,7 +62,7 @@ router.use(function timeLog (req,res, next){
     // Get the payment token ID submitted by the form:
     var token = req.body.stripeToken; // Using Express
 
-    var amount =(+req.body.amount * 100);
+    var amount = Math.round(+req.body.amount * 100);
     var shipping_address = req.body.shipping_address;
     cart_info.shipping_address = shipping_address;
     cart_info.created = Util.formatDate(Util.getcurrenttime(), "yyyy-MM-dd HH:mm:ss");
