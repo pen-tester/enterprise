@@ -128,5 +128,28 @@ router.use(function timeLog (req,res, next){
 
 });
 
+router.all("/", function(req,res){
+    //Check if there are pending requests.
+    //Getting the latest productions...
+    product_collection.find({ $query: {}, $orderby: { created : -1 } }).limit(9).exec()
+    .then(products =>
+    {
+        console.log(products);
+        res.render('layouts/main',
+        {
+           user:res.locals.userdata,
+           pagename:"index", 
+           products:products}
+       );
+    })
+    .catch(error=>{
+        console.log("get error", error);
+        res.json({
+            status:MessageCode.code.fail, code:MessageCode.error.db_get_error, error:error
+        })       
+    });   
+    
+ });
+
 
 module.exports = router;
