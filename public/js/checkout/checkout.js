@@ -43,6 +43,13 @@ card.addEventListener('change', function(event) {
 var form = document.getElementById('payment-form');
 form.addEventListener('submit', function(event) {
   event.preventDefault();
+    if($("input[name=shipping_address]").val()==""){
+        $("#data_error_code").fadeIn();
+            return;
+    }else{
+        $("#data_error_code").fadeOut();
+    }
+
 
   stripe.createToken(card).then(function(result) {
     if (result.error) {
@@ -65,13 +72,6 @@ function stripeTokenHandler(token) {
     hiddenInput.setAttribute('value', token.id);
     form.appendChild(hiddenInput);
   
-    if($("input[name=shipping_address]").val()==""){
-        $("#data_error_code").fadeIn();
-        return;
-    }else{
-        $("#data_error_code").fadeOut();
-    }
-
     window.localStorage.clear();
 
     // Submit the form
