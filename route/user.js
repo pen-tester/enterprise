@@ -38,46 +38,32 @@ router.use(function timeLog (req,res, next){
  });
 
 
- router.get("/profile/logo", function(req,res){
-    //Check if there are pending requests.
-
-    if(res.locals.userdata.optionid == 2){
-        res.json({status:'error', error:'The customer Id is not set', code:MessageCode.error, info:error});
-        return;        
+router.get("/login", function(req,res){
+    res.render('layouts/user',
+    {
+       pagename:"login", 
     }
-
-    var sql = Customer_model.sql_select_profile_logo(res.locals.userdata.identification);
-
-    Vaultdbpool.getConnection(function(err, Vaultdb) {
-        if(err){
-            console.log("Error from geting connection from vault db", err);
-            res.json({status:'error', error:'Server DB error', code:MessageCode.error, info:err});
-            return;            
-        }
-        // Use the connection
-        Vaultdb.query(sql, function (error, results, fields) {
-            try{
-                Vaultdb.release();
-            }
-            catch(e){
-                
-            }
-            if(error) {
-                 res.json({status:'error', error:'Server DB error', code:MessageCode.error, info:error});
-                 return;
-            }
-            //check the results if there are pending requests
-            var profile_logo ={};
-            if(results.length>0){
-                profile_logo=results[0];
-            }
-            res.json({status:'ok', error:'', code:MessageCode.ok, result:profile_logo });
-            return;
-        });        
-      });    
-//res.json({status:'error', error:'The checkout has to be post method', code:MessageCode.error});
+   );    
 });
 
 
+router.all("/register", function(req,res){
+    var email="";
+    if(req.body.email) email=req.body.email;
+    res.render('layouts/user',
+    {
+       pagename:"register", 
+       email:email
+    }
+   );    
+});
+
+router.all("/forgetpass", function(req,res){
+    res.render('layouts/user',
+    {
+       pagename:"forgetpass", 
+    }
+   );    
+});
 
 module.exports = router;

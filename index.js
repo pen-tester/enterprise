@@ -9,6 +9,7 @@ var user = require('./route/user');
 var main_route = require('./route/main');
 var helper_route=require('./route/helper');
 var checkout_route=require('./route/checkout');
+var api_route=require('./route/api');
 
 var socketio = require('socket.io');
 var notification_process = require('./server/notification');
@@ -58,6 +59,7 @@ app.use('/customer', customer);
 app.use('/user', user);
 app.use('/helper',helper_route);
 app.use('/checkout', checkout_route);
+app.use('/api', api_route);
 app.use('/',main_route);
 
 
