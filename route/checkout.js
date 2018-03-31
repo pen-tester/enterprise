@@ -56,7 +56,7 @@ router.use(function timeLog (req,res, next){
         }); 
     }
 
-    var stripe = require("stripe")("sk_live_QFbyU7AGqWXhacuD9YousZZF");
+    var stripe = require("stripe")("sk_test_gq5k1GeWA1HlqRm2vLCcyV8Q");
 
     // Token is created using Checkout or Elements!
     // Get the payment token ID submitted by the form:
