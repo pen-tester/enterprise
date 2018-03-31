@@ -75,6 +75,7 @@ router.use(function timeLog (req,res, next){
             metadata:{
                 orderid:cart_info.orderid
             },
+            capture:false,
             source: token,
         }, 
         function(err, charge) {
@@ -88,14 +89,17 @@ router.use(function timeLog (req,res, next){
                 });       
                 return;         
             }
-            payment_collection = new payment_collection(cart_info);
-            payment_collection.save();
-            res.render('layouts/checkout',
-            {
-               user:res.locals.userdata,
-               pagename:"success",
-               charge:JSON.stringify(charge)
-            });             
+
+            stripe.charges.capture(charge.id, function(error, capture_charge){
+                payment_collection = new payment_collection(cart_info);
+                payment_collection.save();
+                res.render('layouts/checkout',
+                {
+                   user:res.locals.userdata,
+                   pagename:"success",
+                   charge:JSON.stringify(charge)
+                });  
+            });
         }
     );
     
